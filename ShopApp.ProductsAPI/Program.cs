@@ -1,4 +1,11 @@
+using Microsoft.EntityFrameworkCore;
+using ShopApp.ProductsAPI.Data;
+
 var builder = WebApplication.CreateBuilder(args);
+// Get the Connection String Value
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+//Registering the DbContext
+builder.Services.AddDbContext<ProductsDbContext>(options =>options.UseSqlServer(connectionString));
 
 // Add services to the container.
 
