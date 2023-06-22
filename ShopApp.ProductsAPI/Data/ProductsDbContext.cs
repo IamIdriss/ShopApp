@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShopApp.ProductsAPI.Models;
 
 namespace ShopApp.ProductsAPI.Data
 {
@@ -8,5 +9,6 @@ namespace ShopApp.ProductsAPI.Data
         {
             
         }
+        public DbSet<Product> Products { get; set; }
     }
 }
