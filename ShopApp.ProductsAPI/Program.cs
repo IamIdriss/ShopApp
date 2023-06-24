@@ -1,15 +1,18 @@
 using Microsoft.EntityFrameworkCore;
 using ShopApp.ProductsAPI.Data;
+using ShopApp.ProductsAPI.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Get the Connection String Value
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-//Registering the DbContext
-builder.Services.AddDbContext<ProductsDbContext>(options =>options.UseSqlServer(connectionString));
 
 // Add services to the container.
+
+//Registering the DbContext
+builder.Services.AddDbContext<ProductsDbContext>(options =>options.UseSqlServer(connectionString));
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
