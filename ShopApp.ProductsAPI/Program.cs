@@ -9,11 +9,9 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 
 // Add services to the container.
-
-//Registering the DbContext
 builder.Services.AddDbContext<ProductsDbContext>(options =>options.UseSqlServer(connectionString));
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
-
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
