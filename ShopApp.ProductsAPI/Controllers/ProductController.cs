@@ -59,5 +59,105 @@ namespace ShopApp.ProductsAPI.Controllers
 
             return _response;
         }
+
+        //Insert New Product /api/products
+        [HttpPost]
+        public async Task<object> CreateProduct(ProductDto productDto)
+        {
+            try
+            {
+                if (productDto.ProductId == 0)
+                {
+                    ProductDto model = await _productRepository.UpsertProduct(productDto);
+
+                    _response.Result = model;
+                    _response.DisplayMessage = "Product has been created";
+                }
+                else
+                {
+                    _response.IsSuccess = false;
+                    _response.DisplayMessage = "Error occurs while creating product!";
+                    _response.ErrorMessages = new() { "Error occurs while creating product!" };
+                    return _response;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                _response.IsSuccess = false;
+                _response.ErrorMessages
+                    = new List<string> { ex.ToString() };
+            }
+
+            return _response;
+        }
+
+        //Update Product /api/products
+        [HttpPut]
+        public async Task<object> UpdateProduct(ProductDto productDto)
+        {
+            try
+            {
+                if (productDto.ProductId > 0)
+                {
+                    ProductDto model = await _productRepository.UpsertProduct(productDto);
+
+                    _response.Result = model;
+                    _response.DisplayMessage = "Product has been updated";
+                }
+                else
+                {
+                    _response.IsSuccess = false;
+                    _response.DisplayMessage = "Product id is not correct!";
+                    _response.ErrorMessages = new() { "Product id is not correct!" };
+                    return _response;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                _response.IsSuccess = false;
+                _response.ErrorMessages
+                    = new List<string> { ex.ToString() };
+            }
+
+            return _response;
+        }
+
+        //Delete Product /api/products/1
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<object> DeleteProduct(int id)
+        {
+            try
+            {
+                bool isSuccess = await _productRepository.DeleteProduct(id);
+                if (!isSuccess)
+                {
+                    _response.IsSuccess = false;
+                    _response.Result = isSuccess;
+                    _response.DisplayMessage = "Product is not found!";
+                    _response.ErrorMessages = new() { "Product is not found!" };
+                    return _response;
+                }
+                else
+                {
+                    _response.Result = isSuccess;
+                    _response.DisplayMessage = "Product has been deleted";
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                _response.IsSuccess = false;
+                _response.ErrorMessages
+                    = new List<string> { ex.ToString() };
+            }
+
+            return _response;
+        }
     }
 }
