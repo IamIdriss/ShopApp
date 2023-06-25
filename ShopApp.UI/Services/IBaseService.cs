@@ -5,7 +5,7 @@ namespace ShopApp.UI.Services
 {
     public interface IBaseService:IDisposable
     {
-        public ResponseDto ResponseModel { get; set; }
+        
         Task<T> SendAsync<T>(ApiRequest apiRequest);
 
     }
