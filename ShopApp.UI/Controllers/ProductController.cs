@@ -23,5 +23,23 @@ namespace ShopApp.UI.Controllers
             }
             return View(products);
         }
+        public IActionResult CreateProduct()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateProduct(ProductDto model)
+        {
+            if (ModelState.IsValid)
+            {
+                var resoponse =await _productService.CreateProduct<ResponseDto>(model);
+                if (resoponse!=null && resoponse.IsSuccess)
+                {
+                    return RedirectToAction("ProductIndex");
+                }
+            }
+            return View(model); ;
+        }
     }
 }
