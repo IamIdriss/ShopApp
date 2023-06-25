@@ -1,0 +1,53 @@
+﻿@using ShopApp.UI.Models.Dtos
+@model IEnumerable<ProductDto>
+
+<div class="container p-2 ">
+    <div class="row pb-2">
+        <div class="col">
+            <h2 class="text-Dark ">Products List</h2>
+        </div>
+        <div class="col text-end pt-2">
+            <a asp-action="CreateProduct" class="btn btn-outline-dark"><i class="fa-solid fa-plus"></i> Create New Product</a>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th class="text-center">
+                    Category Name
+                </th>
+                <th class="text-center">
+                    Price
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td class="text-center">
+                        @item.CategoryName
+                    </td>
+                    <td class="text-center">
+                        @((item.Price) + " CAD")
+                    </td>
+                    <td class="d-flex justify-content-end">
+                        <a asp-action="UpdateProduct" class="btn btn-success mx-5" asp-route-productId="@item.ProductId">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </a>
+                        <a asp-action="DeleteProduct" class="btn btn-danger" asp-route-productId="@item.ProductId">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
