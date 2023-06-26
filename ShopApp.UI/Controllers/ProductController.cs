@@ -70,5 +70,30 @@ namespace ShopApp.UI.Controllers
             }
             return View(model);
         }
+
+        public async Task<IActionResult> DeleteProduct(int productId)
+        {
+            
+            var response = await _productService.GetProduct<ResponseDto>(productId);
+            if (response != null && response.IsSuccess)
+            {
+                var product = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Result));
+                return View(product);
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteProduct(ProductDto model)
+        {
+            
+            var response = await _productService.DeleteProduct<ResponseDto>(model.ProductId);
+            if (response != null && response.IsSuccess)
+            {
+               
+                return RedirectToAction("ProductIndex");
+            }
+            return View(model);
+        }
     }
 }
