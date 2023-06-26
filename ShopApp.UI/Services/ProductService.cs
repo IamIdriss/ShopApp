@@ -27,7 +27,7 @@ namespace ShopApp.UI.Services
 
         public async Task<T> DeleteProduct<T>(int id)
         {
-            var link = "https://localhost:7055/api/prodcuts";
+            var link = $"https://localhost:7055/api/prodcuts/{id}";
             return await SendAsync<T>(new Models.ApiRequest()
             {
                 ApiType = SD.ApiType.DELETE,
@@ -57,7 +57,7 @@ namespace ShopApp.UI.Services
 
         public async Task<T> GetProduct<T>(int id)
         {
-            var link = "https://localhost:7055/api/prodcuts";
+            var link = $"https://localhost:7055/api/prodcuts/{id}";
             return await SendAsync<T>(new Models.ApiRequest()
             {
                 ApiType = SD.ApiType.GET,

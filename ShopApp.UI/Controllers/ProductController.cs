@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ShopApp.UI.Models.Dtos;
 using ShopApp.UI.Services;
+using System.Collections.Generic;
 
 namespace ShopApp.UI.Controllers
 {
@@ -40,6 +42,33 @@ namespace ShopApp.UI.Controllers
                 }
             }
             return View(model); 
+        }
+        [HttpGet]
+        public async Task<IActionResult> UpdateProduct(int productId)
+        {
+            
+            var response = await _productService.GetProduct<ResponseDto>(productId);
+            if (response != null && response.IsSuccess)
+            {
+                var product = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Result));
+                return View(product);
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateProduct(ProductDto model)
+        {
+            if (ModelState.IsValid)
+            {
+              
+                var response = await _productService.UpdateProduct<ResponseDto>(model);
+                if (response != null && response.IsSuccess)
+                {
+                    return RedirectToAction("ProductIndex");
+                }
+            }
+            return View(model);
         }
     }
 }
