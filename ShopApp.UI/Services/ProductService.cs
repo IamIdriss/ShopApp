@@ -1,4 +1,6 @@
-﻿using ShopApp.UI.Models.Dtos;
+﻿using ShopApp.UI.Models;
+using ShopApp.UI.Models.Dtos;
+using static System.Net.WebRequestMethods;
 
 namespace ShopApp.UI.Services
 {
@@ -10,11 +12,14 @@ namespace ShopApp.UI.Services
 
         public async Task<T> CreateProduct<T>(ProductDto productDto)
         {
-            return await SendAsync<T>(new Models.ApiRequest()
+            var link = "https://localhost:7055/api/prodcuts";
+            return await SendAsync<T>(new ApiRequest()
             {
-                ApiType=SD.ApiType.POST,
+                
+                ApiType =SD.ApiType.POST,
                 Data= productDto,
-                Url=SD.ProductsAPIUrl+"/api/products",
+                Url=link,
+                //Url=SD.ProductsAPIUrl+"/api/products",
                 AccessToken=""
             }
                 );
@@ -22,11 +27,13 @@ namespace ShopApp.UI.Services
 
         public async Task<T> DeleteProduct<T>(int id)
         {
+            var link = "https://localhost:7055/api/prodcuts";
             return await SendAsync<T>(new Models.ApiRequest()
             {
                 ApiType = SD.ApiType.DELETE,
+                Url=link,
               
-                Url = SD.ProductsAPIUrl + $"/api/products/{id}",
+                //Url = SD.ProductsAPIUrl + $"/api/products/{id}",
                 AccessToken = ""
             }
                 );
@@ -34,23 +41,29 @@ namespace ShopApp.UI.Services
 
         public async Task<T> GetAllProducts<T>()
         {
+            var link ="https://localhost:7055/api/prodcuts";
             return await SendAsync<T>(new Models.ApiRequest()
             {
                 ApiType = SD.ApiType.GET,
 
-                Url = SD.ProductsAPIUrl + "/api/products",
+                Url = link,
+                //Url = SD.ProductsAPIUrl + "/api/products",
+
                 AccessToken = ""
             }
-                );
+                ) ; 
+            
         }
 
         public async Task<T> GetProduct<T>(int id)
         {
+            var link = "https://localhost:7055/api/prodcuts";
             return await SendAsync<T>(new Models.ApiRequest()
             {
                 ApiType = SD.ApiType.GET,
+                Url = link,
 
-                Url = SD.ProductsAPIUrl + $"/api/products/{id}",
+                //Url = SD.ProductsAPIUrl + $"/api/products/{id}",
                 AccessToken = ""
             }
                 );
@@ -58,11 +71,13 @@ namespace ShopApp.UI.Services
 
         public async Task<T> UpdateProduct<T>(ProductDto productDto)
         {
+            var link = "https://localhost:7055/api/prodcuts";
             return await SendAsync<T>(new Models.ApiRequest()
             {
                 ApiType = SD.ApiType.PUT,
                 Data = productDto,
-                Url = SD.ProductsAPIUrl + "/api/products",
+                Url = link,
+               // Url = SD.ProductsAPIUrl + "/api/products/",
                 AccessToken = ""
             }
                 );

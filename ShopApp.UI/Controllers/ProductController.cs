@@ -17,7 +17,7 @@ namespace ShopApp.UI.Controllers
         {
             List<ProductDto> products = new ();
             var response = await _productService.GetAllProducts<ResponseDto>();
-            if (response!= null && response.IsSuccess)
+            if (response != null && response.IsSuccess)
             {
                 products = JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response.Result));
             }
@@ -39,7 +39,7 @@ namespace ShopApp.UI.Controllers
                     return RedirectToAction("ProductIndex");
                 }
             }
-            return View(model); ;
+            return View(model); 
         }
     }
 }
