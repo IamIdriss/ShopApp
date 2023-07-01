@@ -9,6 +9,28 @@ builder.Services.AddHttpClient<IProductService, ProductService>();
 SD.ProductsAPIUrl = builder.Configuration["APIUrls:ProductsAPI"]; 
 builder.Services.AddScoped<IProductService, ProductService>();
 
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultScheme = "Cookies";
+    opt.DefaultChallengeScheme = "oidc";
+})
+    .AddCookie("Cookies", c => c.ExpireTimeSpan = TimeSpan.FromMinutes(30))
+    .AddOpenIdConnect("oidc", opt =>
+    {
+        opt.Authority = builder.Configuration["APIUrls:IdentityServer"];
+        opt.GetClaimsFromUserInfoEndpoint = true;
+        opt.ClientId = "shopapp";
+        opt.ClientSecret = "secret";
+        opt.ResponseType = "code";
+
+        opt.TokenValidationParameters.NameClaimType = "name";
+        opt.TokenValidationParameters.RoleClaimType = "role";
+        opt.Scope.Add("shopapp");
+        opt.SaveTokens = true;
+
+    });
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,6 +45,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
