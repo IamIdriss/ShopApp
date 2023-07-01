@@ -4,8 +4,10 @@ using Duende.IdentityServer.Services;
 using IdentityModel;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ShopApp.IdentityServer.IdentityServerData.Models;
 
 namespace Identity_Demo.Pages.Logout;
 
@@ -15,14 +17,16 @@ public class Index : PageModel
 {
     private readonly IIdentityServerInteractionService _interaction;
     private readonly IEventService _events;
+    private readonly SignInManager<ApplicationUser> _signInManager;
 
     [BindProperty] 
     public string LogoutId { get; set; }
 
-    public Index(IIdentityServerInteractionService interaction, IEventService events)
+    public Index(IIdentityServerInteractionService interaction, IEventService events ,SignInManager<ApplicationUser> signInManager)
     {
         _interaction = interaction;
         _events = events;
+        _signInManager = signInManager;
     }
 
     public async Task<IActionResult> OnGet(string logoutId)
@@ -66,7 +70,7 @@ public class Index : PageModel
             LogoutId ??= await _interaction.CreateLogoutContextAsync();
                 
             // delete local authentication cookie
-            await HttpContext.SignOutAsync();
+            await _signInManager.SignOutAsync();
 
             // raise the logout event
             await _events.RaiseAsync(new UserLogoutSuccessEvent(User.GetSubjectId(), User.GetDisplayName()));
@@ -91,6 +95,6 @@ public class Index : PageModel
             }
         }
 
-        return RedirectToPage("/Account/Logout/LoggedOut", new { logoutId = LogoutId });
+        return Redirect("https://localhost:7247");
     }
 }
