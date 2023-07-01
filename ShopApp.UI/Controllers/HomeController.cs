@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ShopApp.UI.Models;
 using System.Diagnostics;
 
@@ -14,6 +15,19 @@ namespace ShopApp.UI.Controllers
         }
 
         public IActionResult Index()
+        {
+            return View();
+        }
+        [Authorize]
+        public IActionResult Login()
+        {
+            return RedirectToAction("Index");
+        }
+        public IActionResult Logout()
+        {
+            return SignOut("Cookies","oidc");
+        }
+        public IActionResult Register()
         {
             return View();
         }

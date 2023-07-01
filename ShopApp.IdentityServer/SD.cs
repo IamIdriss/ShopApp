@@ -39,8 +39,8 @@ namespace ShopApp.IdentityServer
                     ClientId = "shopapp",
                     ClientSecrets= { new Secret("secret".Sha256())},
                     AllowedGrantTypes = GrantTypes.Code,
-                    RedirectUris = { "https://localhost:44357/signin-oidc" },
-                    PostLogoutRedirectUris={ "https://localhost:44357/signout-callback-oidc" },
+                    RedirectUris = { "https://localhost:7247/signin-oidc" },
+                    PostLogoutRedirectUris={ "https://localhost:7247/signout-callback-oidc" },
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
