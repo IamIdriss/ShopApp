@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShopApp.ProductsAPI.Models.Dtos;
 using ShopApp.ProductsAPI.Repository;
@@ -18,6 +19,7 @@ namespace ShopApp.ProductsAPI.Controllers
         }
         //Get All Products /api/products
         [HttpGet]
+        [Authorize]
         public async Task<ProductResponseDto> GetAllProducts()
         {
             try
@@ -62,6 +64,7 @@ namespace ShopApp.ProductsAPI.Controllers
 
         //Insert New Product /api/products
         [HttpPost]
+        [Authorize]
         public async Task<object> CreateProduct(ProductDto productDto)
         {
             try
@@ -95,6 +98,7 @@ namespace ShopApp.ProductsAPI.Controllers
 
         //Update Product /api/products
         [HttpPut]
+        [Authorize]
         public async Task<object> UpdateProduct(ProductDto productDto)
         {
             try
@@ -128,6 +132,7 @@ namespace ShopApp.ProductsAPI.Controllers
 
         //Delete Product /api/products/1
         [HttpDelete]
+        [Authorize (Roles ="Admin")]
         [Route("{id}")]
         public async Task<object> DeleteProduct(int id)
         {
