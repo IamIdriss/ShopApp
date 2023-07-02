@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopApp.UI.Models;
 using System.Diagnostics;
@@ -21,8 +22,9 @@ namespace ShopApp.UI.Controllers
             return View();
         }
         [Authorize]
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
             return RedirectToAction("Index");
         }
         public IActionResult Logout()
