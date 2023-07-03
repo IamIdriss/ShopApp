@@ -1,9 +1,11 @@
+using Duende.IdentityServer.AspNetIdentity;
 using Identity_Demo;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ShopApp.IdentityServer;
 using ShopApp.IdentityServer.IdentityServerData;
 using ShopApp.IdentityServer.IdentityServerData.Models;
+using ShopApp.IdentityServer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,7 +33,8 @@ var identity = builder.Services.AddIdentityServer(options =>
 .AddInMemoryIdentityResources(SD.IdentityResources)
 .AddInMemoryApiScopes(SD.ApiScopes)
 .AddInMemoryClients(SD.Clients)
-.AddAspNetIdentity<ApplicationUser>();
+.AddAspNetIdentity<ApplicationUser>()
+.AddProfileService<ProfileService>();
 
 identity.AddDeveloperSigningCredential();
 
