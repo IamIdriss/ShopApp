@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using ShopApp.UI.Models;
 using ShopApp.UI.Models.Dtos;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace ShopApp.UI.Services
@@ -30,6 +31,12 @@ namespace ShopApp.UI.Services
                 {
                     message.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.Data)
                         , Encoding.UTF8, "application/json");
+                }
+                if (!string.IsNullOrEmpty(apiRequest.AccessToken)) 
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+                        "Bearer", apiRequest.AccessToken
+                        );
                 }
                 switch (apiRequest.ApiType)
                 {

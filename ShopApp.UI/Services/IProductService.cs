@@ -4,11 +4,11 @@ namespace ShopApp.UI.Services
 {
     public interface IProductService
     {
-        Task<T> GetAllProducts<T>();
-        Task<T> GetProduct<T>(int id);
-        Task<T> CreateProduct<T>(ProductDto productDto);
-        Task<T> UpdateProduct<T>(ProductDto productDto);
+        Task<T> GetAllProducts<T>(string token);
+        Task<T> GetProduct<T>(int id, string token);
+        Task<T> CreateProduct<T>(ProductDto productDto, string token);
+        Task<T> UpdateProduct<T>(ProductDto productDto, string token);
 
-        Task<T> DeleteProduct<T>(int id);
+        Task<T> DeleteProduct<T>(int id, string token);
     }
 }

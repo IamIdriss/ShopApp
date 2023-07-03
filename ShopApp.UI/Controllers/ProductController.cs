@@ -18,7 +18,8 @@ namespace ShopApp.UI.Controllers
         public async Task<IActionResult> ProductIndex()
         {
             List<ProductDto> products = new ();
-            var response = await _productService.GetAllProducts<ResponseDto>();
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var response = await _productService.GetAllProducts<ResponseDto>(accessToken);
             if (response != null && response.IsSuccess)
             {
                 products = JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response.Result));
@@ -35,7 +36,9 @@ namespace ShopApp.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                var resoponse =await _productService.CreateProduct<ResponseDto>(model);
+
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+                var resoponse =await _productService.CreateProduct<ResponseDto>(model,accessToken);
                 if (resoponse!=null && resoponse.IsSuccess)
                 {
                     return RedirectToAction("ProductIndex");
@@ -46,8 +49,9 @@ namespace ShopApp.UI.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateProduct(int productId)
         {
-            
-            var response = await _productService.GetProduct<ResponseDto>(productId);
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
+            var response = await _productService.GetProduct<ResponseDto>(productId, accessToken);
             if (response != null && response.IsSuccess)
             {
                 var product = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Result));
@@ -61,8 +65,8 @@ namespace ShopApp.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-              
-                var response = await _productService.UpdateProduct<ResponseDto>(model);
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+                var response = await _productService.UpdateProduct<ResponseDto>(model, accessToken);
                 if (response != null && response.IsSuccess)
                 {
                     return RedirectToAction("ProductIndex");
@@ -73,8 +77,8 @@ namespace ShopApp.UI.Controllers
 
         public async Task<IActionResult> DeleteProduct(int productId)
         {
-            
-            var response = await _productService.GetProduct<ResponseDto>(productId);
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var response = await _productService.GetProduct<ResponseDto>(productId, accessToken);
             if (response != null && response.IsSuccess)
             {
                 var product = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Result));
@@ -86,8 +90,8 @@ namespace ShopApp.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteProduct(ProductDto model)
         {
-            
-            var response = await _productService.DeleteProduct<ResponseDto>(model.ProductId);
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var response = await _productService.DeleteProduct<ResponseDto>(model.ProductId,accessToken);
             if (response != null && response.IsSuccess)
             {
                

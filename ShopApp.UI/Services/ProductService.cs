@@ -10,7 +10,7 @@ namespace ShopApp.UI.Services
         {
         }
 
-        public async Task<T> CreateProduct<T>(ProductDto productDto)
+        public async Task<T> CreateProduct<T>(ProductDto productDto, string token)
         {
             var link = "https://localhost:7055/api/prodcuts";
             return await SendAsync<T>(new ApiRequest()
@@ -20,12 +20,12 @@ namespace ShopApp.UI.Services
                 Data= productDto,
                 Url=link,
                 //Url=SD.ProductsAPIUrl+"/api/products",
-                AccessToken=""
+                AccessToken=token
             }
                 );
         }
 
-        public async Task<T> DeleteProduct<T>(int id)
+        public async Task<T> DeleteProduct<T>(int id, string token)
         {
             var link = $"https://localhost:7055/api/prodcuts/{id}";
             return await SendAsync<T>(new Models.ApiRequest()
@@ -34,12 +34,12 @@ namespace ShopApp.UI.Services
                 Url=link,
               
                 //Url = SD.ProductsAPIUrl + $"/api/products/{id}",
-                AccessToken = ""
+                AccessToken = token
             }
                 );
         }
 
-        public async Task<T> GetAllProducts<T>()
+        public async Task<T> GetAllProducts<T>(string token)
         {
             var link ="https://localhost:7055/api/prodcuts";
             return await SendAsync<T>(new Models.ApiRequest()
@@ -49,13 +49,13 @@ namespace ShopApp.UI.Services
                 Url = link,
                 //Url = SD.ProductsAPIUrl + "/api/products",
 
-                AccessToken = ""
+                AccessToken = token
             }
                 ) ; 
             
         }
 
-        public async Task<T> GetProduct<T>(int id)
+        public async Task<T> GetProduct<T>(int id, string token)
         {
             var link = $"https://localhost:7055/api/prodcuts/{id}";
             return await SendAsync<T>(new Models.ApiRequest()
@@ -64,12 +64,12 @@ namespace ShopApp.UI.Services
                 Url = link,
 
                 //Url = SD.ProductsAPIUrl + $"/api/products/{id}",
-                AccessToken = ""
+                AccessToken = token
             }
                 );
         }
 
-        public async Task<T> UpdateProduct<T>(ProductDto productDto)
+        public async Task<T> UpdateProduct<T>(ProductDto productDto, string token)
         {
             var link = "https://localhost:7055/api/prodcuts";
             return await SendAsync<T>(new Models.ApiRequest()
@@ -78,7 +78,7 @@ namespace ShopApp.UI.Services
                 Data = productDto,
                 Url = link,
                // Url = SD.ProductsAPIUrl + "/api/products/",
-                AccessToken = ""
+                AccessToken = token
             }
                 );
         }

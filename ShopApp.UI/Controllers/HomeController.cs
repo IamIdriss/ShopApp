@@ -24,7 +24,7 @@ namespace ShopApp.UI.Controllers
         [Authorize]
         public async Task<IActionResult> Login()
         {
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            //var accessToken = await HttpContext.GetTokenAsync("access_token");
             return RedirectToAction("Index");
         }
         public IActionResult Logout()
