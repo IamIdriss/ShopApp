@@ -19,7 +19,7 @@ namespace ShopApp.ProductsAPI.Controllers
         }
         //Get All Products /api/products
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<ProductResponseDto> GetAllProducts()
         {
             try

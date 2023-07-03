@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using ShopApp.UI.Models;
+using ShopApp.UI.Models.Dtos;
+using ShopApp.UI.Services;
 using System.Diagnostics;
 
 namespace ShopApp.UI.Controllers
@@ -10,16 +13,26 @@ namespace ShopApp.UI.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _config;
+        private readonly IProductService _productService;
 
-        public HomeController(ILogger<HomeController> logger,IConfiguration config)
+        public HomeController(ILogger<HomeController> logger,IConfiguration config,
+            IProductService productService)
         {
             _logger = logger;
             _config = config;
+            _productService = productService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            List<ProductDto> products = new();
+            var response = await _productService.GetAllProducts<ResponseDto>("");
+            if (response != null && response.IsSuccess)
+            {
+                products = JsonConvert.DeserializeObject<List<ProductDto>>(
+                    Convert.ToString(response.Result));
+            }
+                return View(products);
         }
         [Authorize]
         public async Task<IActionResult> Login()
