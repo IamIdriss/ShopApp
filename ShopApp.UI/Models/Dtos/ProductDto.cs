@@ -17,5 +17,8 @@ namespace ShopApp.UI.Models.Dtos
         public string Description { get; set; }
         public string CategoryName { get; set; }
         public string ImageUrl { get; set; }
+
+        [Range(1, 10000)]
+        public double Quantity { get; set; } = 1;
     }
 }

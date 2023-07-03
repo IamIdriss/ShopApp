@@ -34,6 +34,17 @@ namespace ShopApp.UI.Controllers
             }
                 return View(products);
         }
+        public async Task<IActionResult> Details(int productId)
+        {
+            ProductDto product = new();
+            var response = await _productService.GetProduct<ResponseDto>(productId, "");
+            if (response != null && response.IsSuccess)
+            {
+                product = JsonConvert.DeserializeObject<ProductDto>(
+                    Convert.ToString(response.Result));
+            }
+            return View(product);
+        }
         [Authorize]
         public async Task<IActionResult> Login()
         {
