@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Matgr.ShoppingCartAPI.Models
+namespace ShopApp.ShoppingCartAPI.Models
 {
     public class CartHeader
     {

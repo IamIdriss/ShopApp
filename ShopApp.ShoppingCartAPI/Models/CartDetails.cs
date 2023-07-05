@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Matgr.ShoppingCartAPI.Models
+namespace ShopApp.ShoppingCartAPI.Models
 {
 
     public class CartDetails

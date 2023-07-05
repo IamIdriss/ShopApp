@@ -1,4 +1,4 @@
-﻿namespace Matgr.ShoppingCartAPI.Models.Dto
+﻿namespace ShopApp.ShoppingCartAPI.Models.Dto
 {
     public class CartDto
     {

@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopApp.EmailsAPI", "ShopAp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{0ECD325A-3D60-44E9-B88C-C4F7DA37AF41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopApp.IdentityServer", "ShopApp.IdentityServer\ShopApp.IdentityServer.csproj", "{C6F9718D-68EA-4543-BCB9-F90E7CB24B01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopApp.IdentityServer", "ShopApp.IdentityServer\ShopApp.IdentityServer.csproj", "{C6F9718D-68EA-4543-BCB9-F90E7CB24B01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
