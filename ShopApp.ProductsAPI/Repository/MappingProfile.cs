@@ -4,11 +4,11 @@ using ShopApp.ProductsAPI.Models.Dtos;
 
 namespace ShopApp.ProductsAPI.Repository
 {
-    public class MappingProfile:Profile
+    public class MappingProfile : Profile
     {
-        public MappingProfile() 
-        { 
-        CreateMap<Product,ProductDto>().ReverseMap();
+        public MappingProfile()
+        {
+            CreateMap<Product, ProductDto>().ReverseMap();
         }
     }
 }

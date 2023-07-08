@@ -1,5 +1,6 @@
-﻿using ShopApp.ShoppingCartAPI.Models;
+﻿
 using Microsoft.EntityFrameworkCore;
+using ShopApp.ShoppingCartAPI.Models;
 
 namespace ShopApp.ShoppingCartAPI.ShoppingCartData
 {

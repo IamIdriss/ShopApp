@@ -1,13 +1,19 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using ShopApp.ProductsAPI.Repository;
-using ShopApp.ShoppingCartAPI.Repository;
-using ShopApp.ShoppingCartAPI.ShoppingCartData;
+//using Microsoft.EntityFrameworkCore;
+//using Microsoft.IdentityModel.Tokens;
+//using Microsoft.OpenApi.Models;
+//using ShopApp.ProductsAPI.Repository;
+//using ShopApp.ShoppingCartAPI.Repository;
+//using ShopApp.ShoppingCartAPI.ShoppingCartData;
 
 
 
 // Add services to the container.
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using ShopApp.ShoppingCartAPI.Repository;
+using ShopApp.ShoppingCartAPI.ShoppingCartData;
 
 var builder = WebApplication.CreateBuilder(args);
 
