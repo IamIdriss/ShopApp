@@ -17,7 +17,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 // Add services to the container.
 builder.Services.AddDbContext<ShoppingCartDbContext>(options => options.UseSqlServer(connectionString));
-builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+builder.Services.AddAutoMapper(typeof(ShopApp.ShoppingCartAPI.Repository.MappingProfile).Assembly);
 builder.Services.AddScoped<ICartRepository,CartRepository>();
 
 builder.Services.AddControllers();

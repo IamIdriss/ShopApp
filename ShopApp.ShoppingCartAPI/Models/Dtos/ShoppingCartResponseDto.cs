@@ -1,6 +1,6 @@
 ﻿namespace ShopApp.ProductsAPI.Models.Dtos
 {
-    public class ShopingCartResponseDto
+    public class ShoppingCartResponseDto
     {
         public bool IsSuccess { get; set; } = true;
         public object Result { get; set; }

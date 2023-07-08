@@ -1,4 +1,4 @@
-﻿using Matgr.ShoppingCartAPI.Models;
+﻿using ShopApp.ShoppingCartAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ShopApp.ShoppingCartAPI.ShoppingCartData
