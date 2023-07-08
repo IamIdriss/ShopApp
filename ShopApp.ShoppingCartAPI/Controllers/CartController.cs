@@ -78,7 +78,7 @@ namespace ShopApp.ShoppingCartAPI.Controllers
         }
 
         [HttpPost("RemoveFromCart")]
-        public async Task<object> RemoveCart([FromBody] int cartDetailsId)
+        public async Task<object> RemoveFromCart([FromBody] int cartDetailsId)
         {
             try
             {
