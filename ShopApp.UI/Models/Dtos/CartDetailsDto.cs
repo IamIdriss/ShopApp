@@ -14,6 +14,6 @@ namespace ShopApp.UI.Models.Dto
         public int ProductId { get; set; }
         public virtual ProductDto Product { get; set; }
 
-        public int Count { get; set; }
+        public double Count { get; set; }
     }
 }
