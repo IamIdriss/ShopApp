@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ShopApp.ShoppingCartAPI.Models;
 using ShopApp.ShoppingCartAPI.Models.Dto;
 using ShopApp.ShoppingCartAPI.ShoppingCartData;
@@ -79,7 +81,6 @@ namespace ShopApp.ShoppingCartAPI.Repository
                         }
                         catch (Exception)
                         {
-
                             throw;
                         }
 
@@ -103,7 +104,6 @@ namespace ShopApp.ShoppingCartAPI.Repository
             }
             catch (Exception)
             {
-
                 throw;
             }
             return _mapper.Map<CartDto>(cart);
