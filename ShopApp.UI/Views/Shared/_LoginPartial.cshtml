@@ -1,8 +1,19 @@
-﻿<ul class="navbar-nav">
+﻿@inject IHttpContextAccessor httpContext
+<ul class="navbar-nav">
     @if (User.Identity.IsAuthenticated)
     {
+        <li class="nav-item" style="position:relative;">
+            <a class="nav-link text-dark font22 me-sm-4"
+           asp-controller="Cart" asp-action="CartIndex">
+                <i class="fas fa-shopping-cart text-dark "></i>
+                <span style="position:absolute;bottom:27px;font-size:15px;"
+                  class="badge rounded-pill bg-dark py-1">
+                    @((httpContext.HttpContext.Session.GetInt32("count"))??0)
+                </span>
+            </a>
+        </li>
         <li class="nav-item ">
-            <a class="nav-link text-dark font22" href="#">Welcome @User.Identity.Name</a>
+            <a class="nav-link text-dark font22" href="#">Welcome @User.Identity.Name.ToUpper()</a>
         </li>
         <li class="nav-item ">
             <a class="nav-link  text-dark font22" asp-action="Logout" asp-controller="Home">Logout</a>

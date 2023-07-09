@@ -52,7 +52,7 @@ builder.Services.AddAuthorization(opt =>
 
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo() { Title = "Shopapp.ProductsAPI" });
+    c.SwaggerDoc("v1", new OpenApiInfo() { Title = "Shopapp.ShoppingCartAPI" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = @"Enter 'Bearer' [space] and your token",

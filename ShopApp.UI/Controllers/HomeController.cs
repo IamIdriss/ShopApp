@@ -17,14 +17,17 @@ namespace ShopApp.UI.Controllers
         private readonly IConfiguration _config;
         private readonly IProductService _productService;
         private readonly ICartService _cartService;
+        private readonly IHttpContextAccessor _httpContext;
 
         public HomeController(ILogger<HomeController> logger,IConfiguration config,
-            IProductService productService,ICartService cartService)
+            IProductService productService,ICartService cartService,
+            IHttpContextAccessor httpContext)
         {
             _logger = logger;
             _config = config;
             _productService = productService;
             _cartService = cartService;
+            _httpContext = httpContext;
         }
 
         public async Task<IActionResult> Index()
@@ -35,6 +38,12 @@ namespace ShopApp.UI.Controllers
             {
                 products = JsonConvert.DeserializeObject<List<ProductDto>>(
                     Convert.ToString(response.Result));
+                if (User.Identity.IsAuthenticated)
+                {
+                    _httpContext.HttpContext.Session.SetInt32("count", GetCartCount().Result);
+                }
+
+
             }
                 return View(products);
         }
@@ -113,6 +122,28 @@ namespace ShopApp.UI.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        public async Task<int> GetCartCount()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var response = await _cartService
+                .GetCartByUserIdAsync<ResponseDto>(userId, accessToken);
+
+            CartDto cart = new();
+
+            if (response != null && response.IsSuccess)
+            {
+                cart = JsonConvert
+                    .DeserializeObject<CartDto>(Convert.ToString(response.Result));
+            }
+            int count = 0;
+            if (cart.CartHeader != null)
+            {
+                count = (int)cart.CartDetails.Select(cd => cd.Count).Sum();
+            }
+            return count;
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
