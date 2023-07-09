@@ -1,0 +1,97 @@
+﻿@using ShopApp.UI.Models.Dto
+@model CartDto
+
+@{
+    ViewData["Title"] = "Shopping Cart Overview";
+}
+
+@if (Model.CartHeader != null & Model.CartDetails.Count() > 0)
+{
+    <form method="post">
+        <input asp-for="CartHeader.UserId" hidden />
+        <input asp-for="CartHeader.CartHeaderId" hidden />
+        <div class="card border-0 container-fluid">
+            <div class="card-header bg-dark text-light row ">
+                <div class="col-6">
+                    <h4><i class="fa fa-shopping-cart"></i> &nbsp;Shopping Cart Overview</h4>
+                </div>
+                <div class="col-6 text-end">
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-warning ">
+                        <i class="fa fa-shopping-cart"></i> &nbsp;Continue Shopping
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tr class="text-center">
+                        <th></th>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                        <th></th>
+                    </tr>
+                    @foreach (var item in Model.CartDetails)
+                    {
+                        <tr class="text-center align-middle">
+                            <td>
+                                <img style="width:70px;" src="@item.Product.ImageUrl" class="rounded" />
+                            </td>
+                            <td>
+                                @item.Product.Name
+                            </td>
+
+                            <td>
+                                &nbsp;&nbsp;<a asp-action="Decrease"
+                                               asp-route-DetailId="@item.CartDetailId" class="btn btn-outline-dark">
+                                    <i class="fas fa-minus"></i>
+                                </a>&nbsp;&nbsp;
+                                @item.Count
+                                &nbsp;&nbsp;<a asp-action="Increase"
+                                               asp-route-DetailId="@item.CartDetailId" class="btn btn-outline-dark">
+                                    <i class="fas fa-plus"></i>
+                                </a>
+                            </td>
+                            <td>@item.Product.Price.ToString()</td>
+                            <td>
+                                @Model.CartDetails.Where(x => x.ProductId == item.ProductId).Sum(x => x.Count * x.Product.Price).ToString()
+                            </td>
+                            <td>
+                                <a asp-action="RemoveItem"
+                                   asp-route-cartDetailId="@item.CartDetailId" class="btn  btn-outline-danger">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+
+            <div style="margin-top:-10px;" class="card-footer bg-dark text-light row mb-3 ">
+                <div class="col-8">
+                    <h3>Grand Total: @Model.CartHeader.OrderTotal.ToString() CAD</h3>
+                </div>
+                <div class="col-2">
+                    <a asp-action="ClearCart" class="btn btn-small btn-danger form-control">
+                        <i class="fas fa-trash"></i> &nbsp; Clear Cart
+                    </a>
+                </div>
+                <div class="col-2">
+                    <a asp-action="Checkout" class="btn btn-small btn-warning form-control ">
+                        <i class="fas fa-money-check"></i> &nbsp; Proceed To Pay
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
+}
+else
+{
+    <div class="text-center">
+        <h3 class="display-4">Your cart is empty.</h3>
+        <a asp-action="Index" asp-controller="Home" class="btn btn-warning p-3 mt-3 font22">
+            <i class="fa fa-shopping-cart"></i> &nbsp;Continue Shopping
+        </a>
+    </div>
+}
+
