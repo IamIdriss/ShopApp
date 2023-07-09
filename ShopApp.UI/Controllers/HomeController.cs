@@ -146,6 +146,7 @@ namespace ShopApp.UI.Controllers
             return count;
         }
 
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

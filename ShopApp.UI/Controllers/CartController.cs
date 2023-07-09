@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using ShopApp.UI.Models.Dto;
 using ShopApp.UI.Models.Dtos;
 using ShopApp.UI.Services;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 
 namespace ShopApp.UI.Controllers
@@ -13,17 +14,35 @@ namespace ShopApp.UI.Controllers
     {
         private readonly IProductService _productService;
         private readonly ICartService _cartService;
+        private readonly IHttpContextAccessor _httpContext;
 
-        public CartController(IProductService productService,ICartService cartService)
+        public CartController(IProductService productService,ICartService cartService,
+            IHttpContextAccessor httpContext)
         {
             _productService = productService;
             _cartService = cartService;
+            _httpContext = httpContext;
         }
 
         [Authorize]
         public async Task<IActionResult> CartIndex()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                _httpContext.HttpContext.Session.SetInt32("count", GetCartCount().Result);
+            }
             return View(await LoadCartOfLoggedInUser());
+        }
+
+        public async Task<IActionResult> RemoveItem(int CartDetailId)
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var response = await _cartService.RemoveFromCartAsync<ResponseDto>(CartDetailId, accessToken);
+            if (response != null && response.IsSuccess)
+            {
+                return RedirectToAction("CartIndex");
+            }
+            return View();
         }
 
         private async Task<CartDto> LoadCartOfLoggedInUser()
@@ -50,6 +69,28 @@ namespace ShopApp.UI.Controllers
             }
 
             return cart;
+        }
+
+        public async Task<int> GetCartCount()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var response = await _cartService
+                .GetCartByUserIdAsync<ResponseDto>(userId, accessToken);
+
+            CartDto cart = new();
+
+            if (response != null && response.IsSuccess)
+            {
+                cart = JsonConvert
+                    .DeserializeObject<CartDto>(Convert.ToString(response.Result));
+            }
+            int count = 0;
+            if (cart.CartHeader != null)
+            {
+                count = (int)cart.CartDetails.Select(cd => cd.Count).Sum();
+            }
+            return count;
         }
 
     }
