@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ShopApp.ProductsAPI.Models.Dtos;
 using ShopApp.ShoppingCartAPI.Models.Dto;
+using ShopApp.ShoppingCartAPI.Models.Dtos;
 using ShopApp.ShoppingCartAPI.Repository;
 
 namespace ShopApp.ShoppingCartAPI.Controllers
@@ -83,6 +84,26 @@ namespace ShopApp.ShoppingCartAPI.Controllers
             try
             {
                 var isSuccess = await _cartRepository.RemoveFromCart(cartDetailsId);
+                _response.Result = isSuccess;
+
+            }
+            catch (Exception e)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string>
+                {
+                    e.ToString()
+                };
+            }
+            return _response;
+        }
+
+        [HttpPost("UpdateCount")]
+        public async Task<object> UpdateCount(CountDetailsDto count)
+        {
+            try
+            {
+                var isSuccess = await _cartRepository.UpdateCount(count);
                 _response.Result = isSuccess;
 
             }

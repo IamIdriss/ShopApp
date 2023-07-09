@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ShopApp.ShoppingCartAPI.Models;
 using ShopApp.ShoppingCartAPI.Models.Dto;
+using ShopApp.ShoppingCartAPI.Models.Dtos;
 using ShopApp.ShoppingCartAPI.ShoppingCartData;
 using System.Xml.Linq;
 
@@ -150,6 +151,37 @@ namespace ShopApp.ShoppingCartAPI.Repository
                 return true;
             }
             catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateCount(CountDetailsDto countDetails)
+        {
+            CartDetails cartDetails = await _context.CartDetails
+                    .FirstOrDefaultAsync(cd => cd.CartDetailId == countDetails.CartDetailsId);
+            if (cartDetails != null)
+            {
+                if (countDetails.Action == "decrement")
+                {
+                    if (cartDetails.Count > 1)
+                    {
+                        cartDetails.Count -= countDetails.Amount;
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        await RemoveFromCart(countDetails.CartDetailsId);
+                    }
+                }
+                if (countDetails.Action == "increment")
+                {
+                    cartDetails.Count += countDetails.Amount;
+                    await _context.SaveChangesAsync();
+                }
+                return true;
+            }
+            else
             {
                 return false;
             }
