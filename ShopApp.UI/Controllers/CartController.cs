@@ -45,6 +45,58 @@ namespace ShopApp.UI.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Decrease(int DetailId)
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            CountDetailsDto count = new()
+            {
+                CartDetailsId = DetailId,
+                Action = "decrement",
+                Amount = 1
+            };
+            var response = await _cartService
+                                .UpdateCountAsync<ResponseDto>(count, accessToken);
+            if (response != null && response.IsSuccess)
+            {
+                return RedirectToAction("CartIndex");
+            }
+
+            return RedirectToAction("CartIndex"); ;
+        }
+
+        public async Task<IActionResult> Increase(int DetailId)
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            CountDetailsDto count = new()
+            {
+                CartDetailsId = DetailId,
+                Action = "increment",
+                Amount = 1
+            };
+            var response = await _cartService
+                                .UpdateCountAsync<ResponseDto>(count, accessToken);
+            if (response != null && response.IsSuccess)
+            {
+                return RedirectToAction("CartIndex");
+            }
+
+            return RedirectToAction("CartIndex"); ;
+        }
+
+        public async Task<IActionResult> ClearCart()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var response = await _cartService
+                                .ClearCartAsync<ResponseDto>(userId, accessToken);
+            if (response != null && response.IsSuccess)
+            {
+                return RedirectToAction("CartIndex");
+            }
+
+            return RedirectToAction("CartIndex"); ;
+        }
+
         private async Task<CartDto> LoadCartOfLoggedInUser()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

@@ -53,6 +53,7 @@ namespace ShopApp.ShoppingCartAPI.Repository
                     var details = cart.CartDetails.FirstOrDefault();
                     try
                     {
+                        cart.CartDetails.FirstOrDefault().Product = null;
                         _context.CartDetails.Add(details);
                     }
                     catch (Exception)

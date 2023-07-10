@@ -1,5 +1,6 @@
 ﻿using ShopApp.UI.Models;
 using ShopApp.UI.Models.Dto;
+using ShopApp.UI.Models.Dtos;
 
 namespace ShopApp.UI.Services
 {
@@ -46,6 +47,17 @@ namespace ShopApp.UI.Services
                 ApiType = SD.ApiType.POST,
                 Data = cartDetailsId,
                 Url = SD.ShoppingCartAPIUrl + "/api/cart/RemoveFromCart",
+                AccessToken = token
+            });
+        }
+
+        public async Task<T> UpdateCountAsync<T>(CountDetailsDto count, string token = null)
+        {
+            return await SendAsync<T>(new ApiRequest()
+            {
+                ApiType = SD.ApiType.POST,
+                Data = count,
+                Url = SD.ShoppingCartAPIUrl + "/api/cart/UpdateCount",
                 AccessToken = token
             });
         }

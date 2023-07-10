@@ -1,4 +1,5 @@
 ﻿using ShopApp.UI.Models.Dto;
+using ShopApp.UI.Models.Dtos;
 
 namespace ShopApp.UI.Services
 {
@@ -8,6 +9,7 @@ namespace ShopApp.UI.Services
         Task<T> AddCartAsync<T>(CartDto cartDto, string token = null);
         Task<T> UpdateCartAsync<T>(CartDto cartDto, string token = null);
         Task<T> RemoveFromCartAsync<T>(int cartDetailsId, string token = null);
+        Task<T> UpdateCountAsync<T>(CountDetailsDto count, string token = null);
         Task<T> ClearCartAsync<T>(string userId, string token = null);
     }
 }
