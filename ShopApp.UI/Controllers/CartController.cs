@@ -14,13 +14,15 @@ namespace ShopApp.UI.Controllers
     {
         private readonly IProductService _productService;
         private readonly ICartService _cartService;
+        private readonly ICouponService _couponService;
         private readonly IHttpContextAccessor _httpContext;
 
         public CartController(IProductService productService,ICartService cartService,
-            IHttpContextAccessor httpContext)
+            ICouponService couponService,IHttpContextAccessor httpContext)
         {
             _productService = productService;
             _cartService = cartService;
+            _couponService = couponService;
             _httpContext = httpContext;
         }
 
@@ -97,6 +99,33 @@ namespace ShopApp.UI.Controllers
             return RedirectToAction("CartIndex"); ;
         }
 
+        public async Task<IActionResult> ApplyCoupon(CartDto cartDto)
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var response = await _cartService
+                                .ApplyCouponAsync<ResponseDto>(cartDto, accessToken);
+            if (response != null && response.IsSuccess)
+            {
+                return RedirectToAction("CartIndex");
+            }
+
+            return RedirectToAction("CartIndex");
+        }
+
+        public async Task<IActionResult> RemoveCoupon()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var response = await _cartService
+                                .RemoveCouponAsync<ResponseDto>(userId, accessToken);
+            if (response != null && response.IsSuccess)
+            {
+                return RedirectToAction("CartIndex");
+            }
+
+            return RedirectToAction("CartIndex");
+        }
+
         private async Task<CartDto> LoadCartOfLoggedInUser()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -118,6 +147,27 @@ namespace ShopApp.UI.Controllers
                 {
                     cart.CartHeader.OrderTotal += (detail.Product.Price * detail.Count);
                 }
+
+                if (!string.IsNullOrEmpty(cart.CartHeader.CouponCode))
+                {
+                    var res = await _couponService.GetCouponAsync<ResponseDto>(
+                        cart.CartHeader.CouponCode, accessToken);
+                    if (res != null && res.IsSuccess)
+                    {
+                        var coupon = JsonConvert.DeserializeObject<CouponDto>(
+                            Convert.ToString(res.Result));
+
+                        cart.CartHeader.DiscountTotal
+                            = Math.Round(coupon.DiscountAmount * cart.CartHeader.OrderTotal, 2);
+                    }
+                    cart.CartHeader.OrderTotal -= cart.CartHeader.DiscountTotal;
+                    cart.CartHeader.GrandTotal = cart.CartHeader.OrderTotal + cart.CartHeader.DiscountTotal;
+                }
+                else
+                {
+                    cart.CartHeader.GrandTotal = cart.CartHeader.OrderTotal;
+                }
+
             }
 
             return cart;

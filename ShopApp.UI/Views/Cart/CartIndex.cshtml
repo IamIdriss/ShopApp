@@ -68,18 +68,55 @@
             </div>
 
             <div style="margin-top:-10px;" class="card-footer bg-dark text-light row mb-3 ">
-                <div class="col-8">
-                    <h3>Grand Total: @Model.CartHeader.OrderTotal.ToString() CAD</h3>
+                <div class="row">
+                    <div class="col-3">
+                        <h5 class="text-warning">  Grand Total : @Model.CartHeader.GrandTotal EGP</h5>
+                    </div>
+
+                    @if (string.IsNullOrEmpty(Model.CartHeader.CouponCode))
+                    {
+                        <div class="col-3">
+                            <span>Coupon:</span>
+                            <input type="text" size="5" asp-for="CartHeader.CouponCode" />
+                            <button asp-action="ApplyCoupon" class="btn-info"> Apply </button>
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="col-3">
+                            <span>Coupon:</span>
+                            <input type="text" size="5" asp-for="CartHeader.CouponCode" disabled />
+                            <button asp-action="RemoveCoupon" class="btn-danger"> Remove </button>
+                        </div>
+                    }
+
+                    <div class="col-3">
+                        @if (Model.CartHeader.DiscountTotal > 0)
+                        {
+                            <h5 class="text-info"> Order Discount :  @Model.CartHeader.DiscountTotal EGP</h5>
+                        }
+                        else
+                        {
+                            <h5 class="text-info"> No Coupons Applied</h5>
+                        }
+
+                    </div>
+                    <div class="col-3">
+                        <h5 class="text-warning text-end">  Order Total : @Model.CartHeader.OrderTotal EGP</h5>
+                    </div>
                 </div>
-                <div class="col-2">
-                    <a asp-action="ClearCart" class="btn btn-small btn-danger form-control">
-                        <i class="fas fa-trash"></i> &nbsp; Clear Cart
-                    </a>
-                </div>
-                <div class="col-2">
-                    <a asp-action="Checkout" class="btn btn-small btn-warning form-control ">
-                        <i class="fas fa-money-check"></i> &nbsp; Proceed To Pay
-                    </a>
+                <div class="row">
+                    <div class="col-6 mt-2 mb1">
+                        <a asp-action="ClearCart" class="btn btn-small btn-danger form-control">
+                            <i class="fas fa-trash"></i> &nbsp; Clear Cart
+                        </a>
+                    </div>
+                    <div class="col-6 mt-2 mb1">
+                        <a asp-action="Checkout" class="btn btn-small btn-warning form-control ">
+                            <i class="fas fa-money-check"></i> &nbsp; Proceed To Pay
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
