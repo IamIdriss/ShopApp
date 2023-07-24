@@ -131,7 +131,35 @@ namespace ShopApp.UI.Controllers
         {
             return View(await LoadCartOfLoggedInUser());
         }
-        
+
+        [HttpPost]
+        public async Task<IActionResult> Checkout(CartDto cartDto)
+        {
+            try
+            {
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
+                var response = await _cartService
+                    .CheckoutAsync<ResponseDto>(cartDto.CartHeader, accessToken);
+                if (!response.IsSuccess)
+                {
+                    TempData["Error"] = response.DisplayMessage;
+                    return RedirectToAction("Checkout");
+                }
+                _httpContext.HttpContext.Session.SetInt32("count", 0);
+                return RedirectToAction("Confirmation");
+            }
+            catch (Exception)
+            {
+
+                return View(cartDto);
+            }
+        }
+
+        public IActionResult Confirmation()
+        {
+            return View();
+        }
+
 
         private async Task<CartDto> LoadCartOfLoggedInUser()
         {
