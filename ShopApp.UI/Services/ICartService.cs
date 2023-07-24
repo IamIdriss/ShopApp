@@ -11,5 +11,7 @@ namespace ShopApp.UI.Services
         Task<T> RemoveFromCartAsync<T>(int cartDetailsId, string token = null);
         Task<T> UpdateCountAsync<T>(CountDetailsDto count, string token = null);
         Task<T> ClearCartAsync<T>(string userId, string token = null);
+        Task<T> ApplyCouponAsync<T>(CartDto cartDto, string token = null);
+        Task<T> RemoveCouponAsync<T>(string userId, string token = null);
     }
 }

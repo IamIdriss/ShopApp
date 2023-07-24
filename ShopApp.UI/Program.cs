@@ -10,8 +10,10 @@ builder.Services.AddHttpClient<IProductService, ProductService>();
 builder.Services.AddHttpClient<ICartService, CartService>();
 SD.ProductsAPIUrl = builder.Configuration["APIUrls:ProductsAPI"]; 
 SD.ShoppingCartAPIUrl = builder.Configuration["APIUrls:ShoppingCartAPI"]; 
+SD.CouponsAPIUrl = builder.Configuration["APIUrls:CouponsAPI"]; 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<ICouponService, CouponService>();
 
 builder.Services.AddAuthentication(opt =>
 {
