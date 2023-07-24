@@ -126,6 +126,13 @@ namespace ShopApp.UI.Controllers
             return RedirectToAction("CartIndex");
         }
 
+        [Authorize]
+        public async Task<IActionResult> Checkout()
+        {
+            return View(await LoadCartOfLoggedInUser());
+        }
+        
+
         private async Task<CartDto> LoadCartOfLoggedInUser()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

@@ -1,0 +1,124 @@
+﻿@using ShopApp.UI.Models.Dto
+@model CartDto
+
+@if (Model != null && Model.CartDetails.Count() > 0)
+{
+    <form method="post">
+        <input asp-for="CartHeader.UserId" hidden />
+        <input asp-for="CartHeader.CartHeaderId" hidden />
+        <input asp-for="CartHeader.CouponCode" hidden />
+        <input asp-for="CartHeader.DiscountTotal" hidden />
+        <input asp-for="CartHeader.OrderTotal" hidden />
+        <div>
+            <p class="text-dark font22">Enter details and place order</p>
+        </div>
+        <div class=" mt-0">
+            <div class="container-fluid row">
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-12">
+                            <label class="col-form-label">First Name</label>
+                            <input asp-for="CartHeader.FirstName" class="form-control" />
+                        </div>
+                        <div class="col-12">
+                            <label class="col-form-label">Last Name</label>
+                            <input asp-for="CartHeader.LastName" class="form-control" />
+                        </div>
+                        <div class="col-12">
+                            <label class="col-form-label">Email</label>
+                            <input asp-for="CartHeader.Email" class="form-control" />
+                        </div>
+                        <div class="col-12">
+                            <label class="col-form-label">Phone</label>
+                            <input asp-for="CartHeader.Phone" class="form-control" />
+                        </div>
+                        <div class="col-12">
+                            <label class="col-form-label">Preferred Delivery Time</label>
+                            <div class="form-group">
+                                <div class='input-group'>
+                                    <input asp-for="CartHeader.PaymentDate" class="form-control form_datetime" type="text">
+                                    <span class="input-group-text">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label class="col-form-label">Card Number</label>
+                            <input asp-for="CartHeader.CardNumber" class="form-control" />
+                        </div>
+
+                        <div class="col-12">
+                            <label class="col-form-label">CVV</label>
+                            <input asp-for="CartHeader.CVV" class="form-control" />
+                        </div>
+
+                        <div class="col-12 pb-4">
+                            <label class="col-form-label">Expiry</label>
+                            <input asp-for="CartHeader.ExpiryMonthYear" placeholder="MMYY" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 mt-4">
+                    <div class="card ml-2">
+                        <div class="card-body">
+                            <div class=" d-none d-lg-block">
+                                <div class="row text-center bg-dark text-warning py-3 mb-3">
+                                    <h5 class="col-6 text-start">Product Details</h5>
+                                    <h5 class="col-3">Price</h5>
+                                    <h5 class="col-3">Count</h5>
+                                </div>
+                                @foreach (var cartObj in Model.CartDetails)
+                                {
+                                    <div class="row align-items-center text-center py-2">
+                                        <h5 class="col-6 text-start">
+                                            <span style="font-size:17px">@cartObj.Product.Name</span>
+                                        </h5>
+                                        <h5 class="col-3" style="font-size:11px;">
+                                            <span style="font-size:17px;"> @cartObj.Product.Price EGP</span>
+                                        </h5>
+                                        <h5 class="col-3" style="font-size:11px;">
+                                            <span style="font-size:17px;"> @cartObj.Count</span>
+                                        </h5>
+                                    </div>
+                                    <hr />
+                                }
+                            </div>
+                            <div class="row bg-dark text-warning py-3">
+                                <div class="col-6">
+                                    @if (Model.CartHeader.DiscountTotal > 0)
+                                    {
+                                        <h5> Order Discount : @Model.CartHeader.DiscountTotal EGP</h5>
+                                    }
+                                </div>
+                                <div class="col-6 text-end">
+                                    <h5>Order Total : @Model.CartHeader.OrderTotal EGP</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-dark">
+                            <div class="row">
+                                <div class="col-12 ">
+                                    <button type="submit" class="btn btn-warning form-control ">
+                                        <h5><i class="fa fa-money-check"></i> &nbsp;Place Order</h5>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+}
+
+@section Scripts{
+    <script>
+        $(document).ready(()=>{
+           $(".form_datetime").datetimepicker({ format: 'yyyy-mm-dd hh:ii'});
+           $('.form_datetime').datetimepicker('setStartDate', new Date());
+           $('.form_datetime').datetimepicker('update', new Date());
+               });
+    </script>
+}
+
