@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShopApp.ProductsAPI.Models.Dtos;
+using ShopApp.ShoppingCartAPI.Messages;
 using ShopApp.ShoppingCartAPI.Models.Dto;
 using ShopApp.ShoppingCartAPI.Models.Dtos;
 using ShopApp.ShoppingCartAPI.Repository;
@@ -179,5 +180,31 @@ namespace ShopApp.ShoppingCartAPI.Controllers
             return _response;
         }
 
+        [HttpPost("Checkout")]
+        public async Task<object> Checkout(CheckoutMessageDto messageDto)
+        {
+            try
+            {
+                var cartDto = await _cartRepository.GetCartByUserId(messageDto.UserId);
+                if (cartDto == null)
+                {
+                    return BadRequest();
+                }
+              
+                messageDto.CartDetails = cartDto.CartDetails;
+                //logic code to add message to process order via azure service bus
+                
+
+            }
+            catch (Exception e)
+            {
+                _response.IsSuccess = false;
+                _response.ErrorMessages = new List<string>
+                {
+                    e.ToString()
+                };
+            }
+            return _response;
+        }
     }
 }

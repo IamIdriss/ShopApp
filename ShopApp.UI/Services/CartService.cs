@@ -95,5 +95,15 @@ namespace ShopApp.UI.Services
             });
         }
 
+        public async Task<T> CheckoutAsync<T>(CartHeaderDto cartHeader, string token = null)
+        {
+            return await SendAsync<T>(new ApiRequest()
+            {
+                ApiType = SD.ApiType.POST,
+                Data = cartHeader,
+                Url = SD.ShoppingCartAPIUrl + "/api/cart/Checkout",
+                AccessToken = token
+            });
+        }
     }
 }
