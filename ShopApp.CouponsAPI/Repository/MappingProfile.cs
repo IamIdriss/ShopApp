@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using ShopApp.CouponsAPI.Models;
+using ShopApp.CouponsAPI.Models.Dtos;
 
 namespace ShopApp.CouponsAPI.Repository
 {
@@ -6,6 +8,7 @@ namespace ShopApp.CouponsAPI.Repository
     {
         protected MappingProfile()
         {
+            CreateMap<Coupon,CouponDto>().ReverseMap();
         }
     }
 }
