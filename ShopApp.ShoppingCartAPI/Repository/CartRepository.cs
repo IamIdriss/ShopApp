@@ -202,5 +202,25 @@ namespace ShopApp.ShoppingCartAPI.Repository
             }
             return false;
         }
+
+        public async Task<bool> ApplyCoupon(string userId, string couponCode)
+        {
+            var cartHeaderFromDb = await _context.CartHeaders
+                 .FirstOrDefaultAsync(ch => ch.UserId == userId);
+            cartHeaderFromDb.CouponCode = couponCode;
+            _context.CartHeaders.Update(cartHeaderFromDb);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> RemoveCoupon(string userId)
+        {
+            var cartHeaderFromDb = await _context.CartHeaders
+                 .FirstOrDefaultAsync(ch => ch.UserId == userId);
+            cartHeaderFromDb.CouponCode = "";
+            _context.CartHeaders.Update(cartHeaderFromDb);
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }
