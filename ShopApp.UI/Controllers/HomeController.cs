@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ShopApp.UI.Models;
-using ShopApp.UI.Models.Dto;
 using ShopApp.UI.Models.Dtos;
 using ShopApp.UI.Services;
 using System.Diagnostics;

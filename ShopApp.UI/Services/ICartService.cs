@@ -1,5 +1,4 @@
-﻿using ShopApp.UI.Models.Dto;
-using ShopApp.UI.Models.Dtos;
+﻿using ShopApp.UI.Models.Dtos;
 
 namespace ShopApp.UI.Services
 {

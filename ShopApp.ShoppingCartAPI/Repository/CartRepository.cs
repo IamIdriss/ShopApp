@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ShopApp.ShoppingCartAPI.Models;
 using ShopApp.ShoppingCartAPI.Models.Dto;
 using ShopApp.ShoppingCartAPI.Models.Dtos;
 using ShopApp.ShoppingCartAPI.ShoppingCartData;
-using System.Xml.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace ShopApp.ShoppingCartAPI.Repository
 {
@@ -15,13 +12,11 @@ namespace ShopApp.ShoppingCartAPI.Repository
         private readonly ShoppingCartDbContext _context;
         private readonly IMapper _mapper;
 
-        public CartRepository(ShoppingCartDbContext context,IMapper mapper)
+        public CartRepository(ShoppingCartDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
-
-        
 
         public async Task<CartDto> UpsertCart(CartDto cartDto)
         {
@@ -83,6 +78,7 @@ namespace ShopApp.ShoppingCartAPI.Repository
                         }
                         catch (Exception)
                         {
+
                             throw;
                         }
 
@@ -106,6 +102,7 @@ namespace ShopApp.ShoppingCartAPI.Repository
             }
             catch (Exception)
             {
+
                 throw;
             }
             return _mapper.Map<CartDto>(cart);

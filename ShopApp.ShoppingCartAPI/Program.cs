@@ -1,32 +1,27 @@
-//using Microsoft.EntityFrameworkCore;
-//using Microsoft.IdentityModel.Tokens;
-//using Microsoft.OpenApi.Models;
-//using ShopApp.ProductsAPI.Repository;
-//using ShopApp.ShoppingCartAPI.Repository;
-//using ShopApp.ShoppingCartAPI.ShoppingCartData;
-
-
-
-// Add services to the container.
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ShopApp.ProductsAPI.Repository;
 using ShopApp.ShoppingCartAPI.Repository;
 using ShopApp.ShoppingCartAPI.ShoppingCartData;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Get the Connection String Value
+//Get The Connection String Value
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
 
 // Add services to the container.
 builder.Services.AddDbContext<ShoppingCartDbContext>(options => options.UseSqlServer(connectionString));
-builder.Services.AddAutoMapper(typeof(ShopApp.ShoppingCartAPI.Repository.MappingProfile).Assembly);
-builder.Services.AddScoped<ICartRepository,CartRepository>();
+builder.Services.AddAutoMapper(typeof(ShopApp.ProductsAPI.Repository.MappingProfile).Assembly);
+builder.Services.AddScoped<ICartRepository, CartRepository>();
+//builder.Services.AddScoped<ICouponRepository, CouponRepository>();
+
 
 builder.Services.AddControllers();
+//builder.Services.AddHttpClient<ICouponRepository, CouponRepository>(hc => hc.BaseAddress = new Uri(
+//     builder.Configuration["APIUrls:CouponsAPI"]));
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 

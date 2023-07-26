@@ -1,4 +1,4 @@
-﻿namespace ShopApp.UI.Models.Dto
+﻿namespace ShopApp.UI.Models.Dtos
 {
     public class CartHeaderDto
     {

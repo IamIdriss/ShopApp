@@ -1,6 +1,4 @@
-﻿using ShopApp.UI.Models.Dtos;
-
-namespace ShopApp.UI.Models.Dto
+﻿namespace ShopApp.UI.Models.Dtos
 {
     public class CartDetailsDto
     {
