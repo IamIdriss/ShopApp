@@ -9,7 +9,7 @@ namespace ShopApp.ShoppingCartAPI.Repository
     {
         public MappingProfile()
         {
-            CreateMap<Product, ProductDto>().ReverseMap();
+            CreateMap<Product, ProductsDto>().ReverseMap();
             CreateMap<Cart, CartDto>().ReverseMap();
             CreateMap<CartHeader, CartHeaderDto>().ReverseMap();
             CreateMap<CartDetails, CartDetailsDto>().ReverseMap();
