@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ShopApp.ProductsAPI\ShopApp.ProductsAPI.csproj" />
+    
   </ItemGroup>
 
 </Project>

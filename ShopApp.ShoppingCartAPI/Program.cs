@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using ShopApp.ProductsAPI.Repository;
+//using ShopApp.ProductsAPI.Repository;
 using ShopApp.ShoppingCartAPI.Repository;
 using ShopApp.ShoppingCartAPI.ShoppingCartData;
 
@@ -12,7 +12,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 // Add services to the container.
 builder.Services.AddDbContext<ShoppingCartDbContext>(options => options.UseSqlServer(connectionString));
-builder.Services.AddAutoMapper(typeof(ShopApp.ProductsAPI.Repository.MappingProfile).Assembly);
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 //builder.Services.AddScoped<ICouponRepository, CouponRepository>();
 

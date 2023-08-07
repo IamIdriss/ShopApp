@@ -1,4 +1,4 @@
-﻿namespace ShopApp.OrdersAPI.Models.Dto
+﻿namespace ShopApp.OrdersAPI.Models.Dtos
 {
     public class CartDetailsDto
     {
@@ -10,7 +10,7 @@
         
 
         public int ProductId { get; set; }
-        public virtual ProductsDto Product { get; set; }
+        public virtual ProductDto Product { get; set; }
 
         public int Count { get; set; }
     }

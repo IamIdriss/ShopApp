@@ -1,6 +1,6 @@
 ﻿namespace ShopApp.ShoppingCartAPI.Models.Dto
 {
-    public class ProductsDto
+    public class ProductDto
     {
 
         public int ProductId { get; set; }
