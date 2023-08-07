@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ShopApp.OrdersAPI.OrdersAPIData;
+using ShopApp.OrdersAPI.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<OrdersDbContext>(options => options.UseSqlServer(connectionString));
 var OptionBuilder = new DbContextOptionsBuilder<OrdersDbContext>();
 OptionBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+builder.Services.AddScoped<IOrderRepository,OrderRepository>();
 //builder.Services.AddHostedService<RabbitMQCheckoutConsumer>();
 //builder.Services.AddHostedService<RabbitMQPaymentConsumer>();
 //builder.Services.AddSingleton(new OrderRepository(OptionBuilder.Options));
