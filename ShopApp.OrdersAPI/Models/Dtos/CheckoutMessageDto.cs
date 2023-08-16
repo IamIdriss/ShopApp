@@ -1,6 +1,4 @@
-﻿using ShopApp.OrdersAPI.Models.Dto;
-
-namespace ShopApp.OrdersAPI.Models.Dtos
+﻿namespace ShopApp.OrdersAPI.Models.Dtos
 {
     public class CheckoutMessageDto
     {
