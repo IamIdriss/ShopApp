@@ -1,4 +1,6 @@
-﻿namespace ShopApp.ShoppingCartAPI.RabbitMQSender
+﻿using ShopApp.MessageBus;
+
+namespace ShopApp.ShoppingCartAPI.RabbitMQSender
 {
     public interface IRabbitMQCheckoutMessageSender
     {
