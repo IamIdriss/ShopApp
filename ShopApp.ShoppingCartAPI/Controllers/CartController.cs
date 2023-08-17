@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ShopApp.MessageBus;
 using ShopApp.ProductsAPI.Models.Dtos;
 using ShopApp.ShoppingCartAPI.Messages;
 using ShopApp.ShoppingCartAPI.Models.Dto;
@@ -13,11 +14,16 @@ namespace ShopApp.ShoppingCartAPI.Controllers
     public class CartController : ControllerBase
     {
         private readonly ICartRepository _cartRepository;
+        private readonly IMessageBus _messageBus;
+        private readonly ICouponRepository _couponRepository;
         private readonly ShoppingCartResponseDto _response;
 
-        public CartController(ICartRepository cartRepository)
+        public CartController(ICartRepository cartRepository,IMessageBus messageBus,
+            ICouponRepository couponRepository)
         {
             _cartRepository = cartRepository;
+            _messageBus = messageBus;
+            _couponRepository = couponRepository;
             _response = new ShoppingCartResponseDto();
         }
 
@@ -190,7 +196,28 @@ namespace ShopApp.ShoppingCartAPI.Controllers
                 {
                     return BadRequest();
                 }
-              
+
+                if (!string.IsNullOrEmpty(messageDto.CouponCode))
+                {
+                    var coupon = await _couponRepository.GetCouponByCode(messageDto.CouponCode);
+                    double total = 0;
+                    foreach (var detail in cartDto.CartDetails)
+                    {
+                        total += (detail.Product.Price * detail.Count);
+                    }
+                    if (messageDto.DiscountTotal !=
+                        Math.Round(coupon.DiscountAmount * total, 2))
+                    {
+                        _response.IsSuccess = false;
+                        _response.ErrorMessages = new List<string>()
+                        {
+                            "Coupon discount amount has been changed, please confirm"
+                        };
+                        _response.DisplayMessage = "Coupon discount amount has been changed, please confirm";
+                        return _response;
+                    }
+                }
+
                 messageDto.CartDetails = cartDto.CartDetails;
                 //logic code to add message to process order via azure service bus
                 

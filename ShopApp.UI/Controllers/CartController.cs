@@ -16,8 +16,8 @@ namespace ShopApp.UI.Controllers
         private readonly ICouponService _couponService;
         private readonly IHttpContextAccessor _httpContext;
 
-        public CartController(IProductService productService,ICartService cartService,
-            ICouponService couponService,IHttpContextAccessor httpContext)
+        public CartController(IProductService productService, ICartService cartService,
+            ICouponService couponService, IHttpContextAccessor httpContext)
         {
             _productService = productService;
             _cartService = cartService;
@@ -130,7 +130,6 @@ namespace ShopApp.UI.Controllers
         {
             return View(await LoadCartOfLoggedInUser());
         }
-
         [HttpPost]
         public async Task<IActionResult> Checkout(CartDto cartDto)
         {
@@ -158,8 +157,6 @@ namespace ShopApp.UI.Controllers
         {
             return View();
         }
-
-
         private async Task<CartDto> LoadCartOfLoggedInUser()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -190,9 +187,12 @@ namespace ShopApp.UI.Controllers
                     {
                         var coupon = JsonConvert.DeserializeObject<CouponDto>(
                             Convert.ToString(res.Result));
-
-                        cart.CartHeader.DiscountTotal
+                        if (coupon != null)
+                        {
+                            cart.CartHeader.DiscountTotal
                             = Math.Round(coupon.DiscountAmount * cart.CartHeader.OrderTotal, 2);
+                        }
+
                     }
                     cart.CartHeader.OrderTotal -= cart.CartHeader.DiscountTotal;
                     cart.CartHeader.GrandTotal = cart.CartHeader.OrderTotal + cart.CartHeader.DiscountTotal;
@@ -201,7 +201,6 @@ namespace ShopApp.UI.Controllers
                 {
                     cart.CartHeader.GrandTotal = cart.CartHeader.OrderTotal;
                 }
-
             }
 
             return cart;
