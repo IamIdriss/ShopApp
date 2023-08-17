@@ -13,4 +13,8 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ShopApp.MessageBus\ShopApp.MessageBus.csproj" />
+  </ItemGroup>
+
 </Project>
