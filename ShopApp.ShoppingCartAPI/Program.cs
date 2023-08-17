@@ -15,13 +15,13 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ShoppingCartDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 builder.Services.AddScoped<ICartRepository, CartRepository>();
-//builder.Services.AddScoped<ICouponRepository, CouponRepository>();
+builder.Services.AddScoped<ICouponRepository, CouponRepository>();
 builder.Services.AddSingleton<IRabbitMQCheckoutMessageSender, RabbitMqCheckoutMessageSender>();
 
 
 builder.Services.AddControllers();
-//builder.Services.AddHttpClient<ICouponRepository, CouponRepository>(hc => hc.BaseAddress = new Uri(
-       // builder.Configuration["APIUrls:CouponsAPI"]));
+builder.Services.AddHttpClient<ICouponRepository, CouponRepository>(hc => hc.BaseAddress = new Uri(
+        builder.Configuration["APIUrls:CouponsAPI"]));
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
