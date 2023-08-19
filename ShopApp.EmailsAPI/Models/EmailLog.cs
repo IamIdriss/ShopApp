@@ -1,0 +1,10 @@
+﻿namespace ShopApp.EmailsAPI.Models
+{
+    public class EmailLog
+    {
+        public int Id { get; set; }
+        public string Email { get; set; }
+        public string Log { get; set; }
+        public DateTime EmailDate { get; set; }
+    }
+}
