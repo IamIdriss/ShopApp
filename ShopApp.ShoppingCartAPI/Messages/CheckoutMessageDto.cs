@@ -1,8 +1,9 @@
-﻿using ShopApp.ShoppingCartAPI.Models.Dto;
+﻿using ShopApp.MessageBus;
+using ShopApp.ShoppingCartAPI.Models.Dtos;
 
 namespace ShopApp.ShoppingCartAPI.Messages
 {
-    public class CheckoutMessageDto
+    public class CheckoutMessageDto:BaseMessage
     {
         public int CartHeaderId { get; set; }
         public string UserId { get; set; }

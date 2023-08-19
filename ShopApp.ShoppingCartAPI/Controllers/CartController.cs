@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using ShopApp.MessageBus;
 using ShopApp.ProductsAPI.Models.Dtos;
 using ShopApp.ShoppingCartAPI.Messages;
-using ShopApp.ShoppingCartAPI.Models.Dto;
 using ShopApp.ShoppingCartAPI.Models.Dtos;
+using ShopApp.ShoppingCartAPI.RabbitMQSender;
 using ShopApp.ShoppingCartAPI.Repository;
 
 namespace ShopApp.ShoppingCartAPI.Controllers
@@ -16,14 +16,16 @@ namespace ShopApp.ShoppingCartAPI.Controllers
         private readonly ICartRepository _cartRepository;
         private readonly IMessageBus _messageBus;
         private readonly ICouponRepository _couponRepository;
+        private readonly IRabbitMQCheckoutMessageSender _rabbitMQCheckoutMessageSender;
         private readonly ShoppingCartResponseDto _response;
 
         public CartController(ICartRepository cartRepository,IMessageBus messageBus,
-            ICouponRepository couponRepository)
+            ICouponRepository couponRepository,IRabbitMQCheckoutMessageSender rabbitMQCheckoutMessageSender)
         {
             _cartRepository = cartRepository;
             _messageBus = messageBus;
             _couponRepository = couponRepository;
+            _rabbitMQCheckoutMessageSender = rabbitMQCheckoutMessageSender;
             _response = new ShoppingCartResponseDto();
         }
 
@@ -219,8 +221,10 @@ namespace ShopApp.ShoppingCartAPI.Controllers
                 }
 
                 messageDto.CartDetails = cartDto.CartDetails;
-                //logic code to add message to process order via azure service bus
-                
+                //logic code to add message to process order via RabbitMQ
+                _rabbitMQCheckoutMessageSender.SendMessage(messageDto, "checkoutmessagequeue");
+                await _cartRepository.ClearCart(messageDto.UserId);
+
 
             }
             catch (Exception e)

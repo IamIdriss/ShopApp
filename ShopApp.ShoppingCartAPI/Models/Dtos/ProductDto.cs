@@ -1,4 +1,4 @@
-﻿namespace ShopApp.ShoppingCartAPI.Models.Dto
+﻿namespace ShopApp.ShoppingCartAPI.Models.Dtos
 {
     public class ProductDto
     {

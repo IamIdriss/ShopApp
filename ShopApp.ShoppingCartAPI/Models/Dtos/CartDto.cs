@@ -1,5 +1,5 @@
-﻿namespace ShopApp.ShoppingCartAPI.Models.Dto
-{
+﻿namespace ShopApp.ShoppingCartAPI.Models.Dtos
+{ 
     public class CartDto
     {
         public CartHeaderDto CartHeader { get; set; }
