@@ -1,5 +1,9 @@
-﻿using RabbitMQ.Client;
+﻿using Newtonsoft.Json;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
+using ShopApp.OrdersAPI.Models.Dtos;
 using ShopApp.OrdersAPI.Repository;
+using System.Text;
 
 namespace ShopApp.OrdersAPI.Services
 {
@@ -35,7 +39,17 @@ namespace ShopApp.OrdersAPI.Services
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            throw new NotImplementedException();
+            stoppingToken.ThrowIfCancellationRequested();
+            var consumer = new EventingBasicConsumer(_channel);
+            consumer.Received += (ch, ea) =>
+            {
+                var content = Encoding.UTF8.GetString(ea.Body.ToArray());
+                var checkoutMessageDto = JsonConvert.DeserializeObject<CheckoutMessageDto>(content);
+                HandleMessage(checkoutMessageDto).GetAwaiter().GetResult();
+                _channel.BasicAck(ea.DeliveryTag, false);
+            };
+            _channel.BasicConsume("checkoutmessagequeue", false, consumer);
+            return Task.CompletedTask;
         }
     }
 }
