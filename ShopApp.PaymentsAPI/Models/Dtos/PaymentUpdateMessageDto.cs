@@ -1,6 +1,8 @@
-﻿namespace ShopApp.PaymentsAPI.Models.Dtos
+﻿using ShopApp.MessageBus;
+
+namespace ShopApp.PaymentsAPI.Models.Dtos
 {
-    public class PaymentUpdateMessageDto
+    public class PaymentUpdateMessageDto :BaseMessage
     {
         public int OrderId { get; set; }
         public string Email { get; set; }
