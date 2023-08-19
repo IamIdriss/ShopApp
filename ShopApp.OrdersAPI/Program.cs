@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ShopApp.OrdersAPI.OrdersAPIData;
 using ShopApp.OrdersAPI.Repository;
+using ShopApp.OrdersAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,11 +15,9 @@ builder.Services.AddDbContext<OrdersDbContext>(options => options.UseSqlServer(c
 var OptionBuilder = new DbContextOptionsBuilder<OrdersDbContext>();
 OptionBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 builder.Services.AddScoped<IOrderRepository,OrderRepository>();
-//builder.Services.AddHostedService<RabbitMQCheckoutConsumer>();
+builder.Services.AddHostedService<RabbitMQCheckoutConsumer>();
 //builder.Services.AddHostedService<RabbitMQPaymentConsumer>();
 //builder.Services.AddSingleton(new OrderRepository(OptionBuilder.Options));
-//builder.Services.AddSingleton<IAzureServiceBusConsumer, AzureServiceBusConsumer>();
-//builder.Services.AddSingleton<IMessageBus, AzureServiceBus>();
 //builder.Services.AddSingleton<IRabbitMQPaymentRequestMessageSender, RabbitMqPaymentRequestMessageSender>();
 
 builder.Services.AddControllers();
@@ -91,7 +90,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-//app.UseAzureServiceBusConsumer();
 
 app.Run();

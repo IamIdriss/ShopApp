@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using ShopApp.OrdersAPI.Models;
 using ShopApp.OrdersAPI.Models.Dtos;
 using ShopApp.OrdersAPI.Repository;
 using System.Text;
@@ -50,6 +51,43 @@ namespace ShopApp.OrdersAPI.Services
             };
             _channel.BasicConsume("checkoutmessagequeue", false, consumer);
             return Task.CompletedTask;
+        }
+
+        private async Task HandleMessage(CheckoutMessageDto checkoutMessageDto)
+        {
+            OrderHeader orderHeader = new()
+            {
+                UserId = checkoutMessageDto.UserId,
+                FirstName = checkoutMessageDto.FirstName,
+                LastName = checkoutMessageDto.LastName,
+                OrderDetails = new List<OrderDetails>(),
+                CardNumber = checkoutMessageDto.CardNumber,
+                CouponCode = checkoutMessageDto.CouponCode,
+                CVV = checkoutMessageDto.CVV,
+                DiscountTotal = checkoutMessageDto.DiscountTotal,
+                Email = checkoutMessageDto.Email,
+                ExpiryMonthYear = checkoutMessageDto.ExpiryMonthYear,
+                OrderDate = DateTime.Now,
+                OrderTotal = checkoutMessageDto.OrderTotal,
+                PaymentStatus = false,
+                Phone = checkoutMessageDto.Phone,
+                OrderDeliveryDate = checkoutMessageDto.PaymentDate
+            };
+
+            foreach (var item in checkoutMessageDto.CartDetails)
+            {
+                OrderDetails orderDetails = new()
+                {
+                    ProductId = item.ProductId,
+                    ProductName = item.Product.Name,
+                    Price = item.Product.Price,
+                    Count = item.Count
+                };
+
+                orderHeader.OrderDetails.Add(orderDetails);
+            };
+
+            await _orderRepository.AddOrder(orderHeader);
         }
     }
 }
