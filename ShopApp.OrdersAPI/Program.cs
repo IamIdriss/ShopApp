@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ShopApp.OrdersAPI.OrdersAPIData;
+using ShopApp.OrdersAPI.RabbitMQSender;
 using ShopApp.OrdersAPI.Repository;
 using ShopApp.OrdersAPI.Services;
 
@@ -16,9 +17,9 @@ var OptionBuilder = new DbContextOptionsBuilder<OrdersDbContext>();
 OptionBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 builder.Services.AddScoped<IOrderRepository,OrderRepository>();
 builder.Services.AddHostedService<RabbitMQCheckoutConsumer>();
+builder.Services.AddSingleton(new OrderRepository(OptionBuilder.Options));
+builder.Services.AddSingleton<IRabbitMQPaymentRequestMessageSender, RabbitMqPaymentRequestMessageSender>();
 //builder.Services.AddHostedService<RabbitMQPaymentConsumer>();
-//builder.Services.AddSingleton(new OrderRepository(OptionBuilder.Options));
-//builder.Services.AddSingleton<IRabbitMQPaymentRequestMessageSender, RabbitMqPaymentRequestMessageSender>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

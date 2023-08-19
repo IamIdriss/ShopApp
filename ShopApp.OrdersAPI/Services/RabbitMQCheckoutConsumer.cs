@@ -3,6 +3,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using ShopApp.OrdersAPI.Models;
 using ShopApp.OrdersAPI.Models.Dtos;
+using ShopApp.OrdersAPI.RabbitMQSender;
 using ShopApp.OrdersAPI.Repository;
 using System.Text;
 
@@ -11,18 +12,19 @@ namespace ShopApp.OrdersAPI.Services
     public class RabbitMQCheckoutConsumer : BackgroundService
     {
         private readonly OrderRepository _orderRepository;
-        
+        private readonly IRabbitMQPaymentRequestMessageSender _rabbitMQPaymentRequestMessageSender;
         private readonly string _hostname;
         private readonly string _username;
         private readonly string _password;
         private IConnection _connection;
         private IModel _channel;
 
-        public RabbitMQCheckoutConsumer(OrderRepository orderRepository
+        public RabbitMQCheckoutConsumer(OrderRepository orderRepository,
+            IRabbitMQPaymentRequestMessageSender rabbitMQPaymentRequestMessageSender
             )
         {
             _orderRepository = orderRepository;
-            
+            _rabbitMQPaymentRequestMessageSender = rabbitMQPaymentRequestMessageSender;
             _hostname = "localhost";
             _username = "guest";
             _password = "guest";
@@ -88,6 +90,25 @@ namespace ShopApp.OrdersAPI.Services
             };
 
             await _orderRepository.AddOrder(orderHeader);
+
+            var paymentRequestMessageDto = new PaymentRequestMessageDto()
+            {
+                Name = orderHeader.FirstName + " " + orderHeader.LastName,
+                Email = orderHeader.Email,
+                CardNumber = orderHeader.CardNumber,
+                CVV = orderHeader.CVV,
+                ExpiryMonthYear = orderHeader.ExpiryMonthYear,
+                OrderId = orderHeader.OrderHeaderId,
+                OrderTotal = orderHeader.OrderTotal
+            };
+            try
+            {
+                _rabbitMQPaymentRequestMessageSender.SendMessage(paymentRequestMessageDto, "paymentRequestMessageQueue");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
